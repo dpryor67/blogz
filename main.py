@@ -61,7 +61,7 @@ def blog_list():
         individual_blog_post = Blog.query.filter_by(id=blog_post_id).first()
         return render_template('individual_blog_post.html', title=individual_blog_post.title, blog_posts=blog_posts)
 
-    blog_posts = Blog.query.all()
+    blog_posts = Blog.query.order_by(Blog.id.desc()).all()
 
     return render_template('main_blog_page.html', blog_posts=blog_posts)
 
