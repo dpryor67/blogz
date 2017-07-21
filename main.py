@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:blogger@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:bloggerz@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -13,10 +13,24 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(300))
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, owner):
         self.title = title
         self.body = body
+        self.owner = owner
+
+class User(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120))
+    password = db.Column(db.String(120))
+    blogs = db.relationship('Blog', backref='owner')
+
+    def __init__(self, username, password):
+        self.userame = username
+        self.password = password
+
 
 
 @app.route('/')
@@ -24,8 +38,20 @@ def index():
     return redirect('/blog')
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
+
+    owner = User.query.filter_by(username=session['username']).first()
 
     if request.method == 'POST':
         blog_post_title = request.form['blog_post_title']
@@ -41,7 +67,7 @@ def newpost():
             body_error = "Please enter some content for your blog post."
 
         if not title_error and not body_error:
-            new_blog_post = Blog(blog_post_title, blog_post_body)
+            new_blog_post = Blog(blog_post_title, blog_post_body, owner)
             db.session.add(new_blog_post)
             db.session.commit()
             return redirect('/blog?id=' + str(new_blog_post.id))
