@@ -27,3 +27,9 @@ p {
 form {
   padding: 1em;
 }
+
+.author {
+  font-style: italic;
+  font-size: 15px;
+  padding-top: 0;
+}

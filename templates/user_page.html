@@ -15,10 +15,8 @@
       <a href="./blog?id={{blog.id}}">{{blog.title}}</a>
     </h3>
     <p>
-      {{blog.body}}
-    </p>
-    <p>
-      <a href="./blog?userId={{blog.owner_id}}">Written by {{blog.owner.username}}</a>
+      {{blog.body}}<br><br>
+      <a class="author" href="./blog?userId={{blog.owner_id}}">Written by {{blog.owner.username}}</a>
     </p>
     {% endfor %}
   </ul>
