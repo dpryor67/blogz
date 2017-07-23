@@ -34,9 +34,17 @@ class User(db.Model):
 
 
 
-@app.route('/')
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'blog_list', 'index', 'signup']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
+
+@app.route('/', methods=['POST', 'GET'])
 def index():
-    return redirect('/blog')
+    users = User.query.order_by(User.username).all()
+    return render_template('index.html', users=users)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -55,7 +63,6 @@ def login():
                 flash('User does not exist', 'error')
             elif user.password != password:
                 flash('User password is incorrect', 'error')
-            # return redirect('/login')
 
     return render_template('login.html')
 
@@ -112,6 +119,12 @@ def signup():
 
     return render_template('signup.html')
 
+@app.route('/logout')
+def logout():
+    del session['username']
+    flash('You have logged out')
+    return redirect('/blog')
+
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -151,6 +164,13 @@ def blog_list():
         blog_posts = Blog.query.filter_by(id=blog_post_id).all()
         individual_blog_post = Blog.query.filter_by(id=blog_post_id).first()
         return render_template('individual_blog_post.html', title=individual_blog_post.title, blog_posts=blog_posts)
+
+    user_id = request.args.get('userId')
+
+    if user_id:
+        user_posts = Blog.query.filter_by(owner_id=user_id).all()
+        user = User.query.get(user_id)
+        return render_template('user_page.html', username=user.username, blog_posts=user_posts)
 
     blog_posts = Blog.query.order_by(Blog.id.desc()).all()
 

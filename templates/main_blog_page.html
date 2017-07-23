@@ -10,7 +10,7 @@
     <h3>You don't have any posts yet.</h3>
 
   {% else %}
-
+    <ul>
       {% for blog in blog_posts %}
       <h3>
         <a href="./blog?id={{blog.id}}">{{blog.title}}</a>

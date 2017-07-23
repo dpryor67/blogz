@@ -2,8 +2,11 @@
 <!doctype html>
 <html>
   <header>
+    <a href='/'>Home</a>
     <a href="/blog">Main Blog Page</a>
     <a href="/newpost">Add a Blog Post</a>
+    <a href='/login'>Log In</a>
+    <a href='/logout'>Log Out</a>
   </header>
 
     <head>
@@ -12,6 +15,8 @@
     </head>
 
 <body>
+
+
   {% with messages = get_flashed_messages(with_categories=True) %}
       <ul>
       {% for category,message in messages %}
