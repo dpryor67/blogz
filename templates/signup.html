@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <style>
+      .error { color: red; }
+  </style>
+
+  <h1>Sign Up for Blogz</h1>
+
+  <form method='POST'>
+      <label>Username
+        <input name="username" type="text" value='{{username}}' />
+      </label>
+      <label class="error">{{username_error}}</label><br><br>
+      <label>Password
+        <input name="password" type="password" value='{{password}}' />
+      </label>
+      <label class="error">{{password_error}}</label><br><br>
+      <label>Verify Password
+        <input type="password" name="verify" value='{{verify}}'/>
+      </label>
+      <label class="error">{{verify_error}}</label><br><br>
+      <input type="submit" value="Submit">
+  </form>
+
+{% endblock %}
