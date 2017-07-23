@@ -3,8 +3,6 @@
 
 <h1>Blog Posts</h1>
 
-<h2>{{username}}</h2>
-
 
 {% if blog_posts|length == 0 %}
 <h3>You don't have any posts yet.</h3>
@@ -18,6 +16,9 @@
     </h3>
     <p>
       {{blog.body}}
+    </p>
+    <p>
+      <a href="./blog?userId={{blog.owner_id}}">Written by {{blog.owner.username}}</a>
     </p>
     {% endfor %}
   </ul>

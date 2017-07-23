@@ -1,21 +1,40 @@
 
 <!doctype html>
 <html>
-  <header>
-    <a href='/'>Home</a>
-    <a href="/blog">Main Blog Page</a>
-    <a href="/newpost">Add a Blog Post</a>
-    <a href='/login'>Log In</a>
-    <a href='/logout'>Log Out</a>
-  </header>
-
-    <head>
-      <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-      <title>{{title}}</title>
-    </head>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+  <title>{{title}}</title>
+</head>
 
 <body>
-
+  <nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+      <li class="navbar-item">
+        <a class="nav-link" href='/'>Home</a>
+      </li>
+      <li class="navbar-item">
+        <a class="nav-link" href="/blog">Main Blog Page</a>
+      </li>
+      <li class="navbar-item">
+        <a class="nav-link" href="/newpost">Add a Blog Post</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav pull-right">
+      {% if session['username'] %}
+      <li class="navbar-item navbar-text">
+        Hi, {{ session['username'] }}
+      </li>
+      <li class="navbar-item">
+        <a class="nav-link" href='/logout'>Log Out</a>
+      </li>
+      {% else %}
+      <li class="navbar-item">
+        <a class="nav-link" href='/login'>Log In</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 
   {% with messages = get_flashed_messages(with_categories=True) %}
       <ul>

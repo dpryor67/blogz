@@ -161,16 +161,14 @@ def blog_list():
     blog_post_id = request.args.get('id')
 
     if blog_post_id:
-        blog_posts = Blog.query.filter_by(id=blog_post_id).all()
-        individual_blog_post = Blog.query.filter_by(id=blog_post_id).first()
-        return render_template('individual_blog_post.html', title=individual_blog_post.title, blog_posts=blog_posts)
+        blog = Blog.query.filter_by(id=blog_post_id).first()
+        return render_template('individual_blog_post.html', blog=blog)
 
     user_id = request.args.get('userId')
 
     if user_id:
         user_posts = Blog.query.filter_by(owner_id=user_id).all()
-        user = User.query.get(user_id)
-        return render_template('user_page.html', username=user.username, blog_posts=user_posts)
+        return render_template('user_page.html', blog_posts=user_posts)
 
     blog_posts = Blog.query.order_by(Blog.id.desc()).all()
 
