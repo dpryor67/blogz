@@ -62,7 +62,7 @@ def login():
         else:
             if not user:
                 flash('User does not exist', 'error')
-            elif user.password != password:
+            elif user.pw_hash != password:
                 flash('User password is incorrect', 'error')
 
     return render_template('login.html')
