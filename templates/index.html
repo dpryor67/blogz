@@ -3,6 +3,10 @@
 
 <h1>List of Blogz Authors</h1>
 
+{% if users|length == 0 %}
+<h3>There aren't any authors yet - sign up to begin posting!</h3>
+
+{% else %}
 <ul>
 
   {% for user in users %}
@@ -12,4 +16,5 @@
 
   {% endfor %}
 </ul>
+{% endif %}
 {% endblock %}
